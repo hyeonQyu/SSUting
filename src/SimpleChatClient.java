@@ -11,10 +11,11 @@ import java.util.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Scanner;
 
 public class SimpleChatClient {
 
-	private static final String HOST = "10.27.18.150";
+	private static final String HOST = "localhost";
 	private static final int PORT = 1333;
 
 	private static FileHandler fileHandler;
@@ -25,10 +26,16 @@ public class SimpleChatClient {
 
 	private Charset charset = null;
 	private CharsetDecoder decoder = null;
+	
+	private String userName;
 
 	public SimpleChatClient() {
 		charset = Charset.forName("EUC-KR");
 		decoder = charset.newDecoder();
+		
+		System.out.print("이름을 입력하세요 >> ");
+		Scanner scanner = new Scanner(System.in);
+		userName = scanner.nextLine();
 	}
 
 	public void initServer() {
@@ -40,8 +47,22 @@ public class SimpleChatClient {
 			sc.configureBlocking(false);
 			
 			sc.register(selector, SelectionKey.OP_READ);
+			broadcast(userName + "님이 입장했습니다.");
+			
 		} catch(IOException e) {
 			log(Level.WARNING, "SimpleChatClient.initServer()", e);
+		}
+	}
+	
+	private void broadcast(String str) {
+		ByteBuffer buffer = ByteBuffer.allocateDirect(50);
+		
+		buffer.put(str.getBytes());
+		buffer.flip();
+		try {
+			sc.write(buffer);
+		} catch(Exception e) {
+			System.out.println("broadcast 문제 발생");
 		}
 	}
 	
@@ -51,16 +72,16 @@ public class SimpleChatClient {
 	}
 	
 	private void startWriter() {
-		info("Writer is started..");
+//		info("Writer is started..");
 		Thread t = new MyThread(sc);
 		t.start();
 	}
 	
 	private void startReader() {
-		info("Reader is started..");
+//		info("Reader is started..");
 		try {
 			while(true) {
-				info("요청을 기다리는 중..");
+//				info("요청을 기다리는 중..");
 				selector.select();
 				
 				Iterator it = selector.selectedKeys().iterator();
@@ -86,7 +107,7 @@ public class SimpleChatClient {
 		try {
 			// 요청한 클라이언트의 소켓채널로부터 데이터를 읽어들임
 			read = sc.read(buffer);
-			info(read + "byte를 읽었습니다.");
+//			info(read + "byte를 읽었습니다.");
 		} catch(IOException e) {
 			try {
 				sc.close();
@@ -104,7 +125,7 @@ public class SimpleChatClient {
 			log(Level.WARNING, "SimpleChatClient.read()", e);
 		}
 		
-		System.out.println("Message - " + data);
+		System.out.println(data);
 		
 		// 버퍼 메모리 해제
 		clearBuffer(buffer);
@@ -148,16 +169,19 @@ public class SimpleChatClient {
 				while(!Thread.currentThread().isInterrupted()) {
 					buffer.clear();
 					BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-					String message = in.readLine();
+					String	message = userName + " : " + in.readLine();
 					
-					if(message.equals("quit") || message.equals("shutdown")) {
-						System.exit(0);
+					// ctrl + c 혹은 quit이라고 입력
+					if(message.equals(userName + " : null") || message.equals(userName + " : quit")) {
+						message = userName + "님이 나갔습니다.";
 					}
 					
 					buffer.put(message.getBytes());
 					buffer.flip();
 					
 					sc.write(buffer);
+					if(message.equals(userName + "님이 나갔습니다."))
+						System.exit(0);
 				}
 			} catch(Exception e) {
 				

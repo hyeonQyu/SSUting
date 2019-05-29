@@ -14,7 +14,7 @@ import java.util.logging.*;
 
 public class SimpleChatServer {
 	
-	private static final String HOST = "10.27.18.150";
+	private static final String HOST = "localhost";
 	private static final int PORT = 1333;
 	
 	private static FileHandler fileHandler;
