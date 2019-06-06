@@ -48,6 +48,7 @@ public class SSUtingClient {
 
 			// 서버로 닉네임을 전송
 			out.writeUTF(data);
+			
 			// 사용자가 채팅 내용을 입력 및 서버로 전송하기 위한 쓰레드 생성 및 시작
 			ClientThread thread = new ClientThread(out, data);
 			thread.start();
@@ -55,10 +56,12 @@ public class SSUtingClient {
 			// 클라이언트의 메인 쓰레드는 서버로부터 데이터 읽어들이는 것만 반복.
 			while (true) {
 				String str2 = in.readUTF();
-				System.out.println(str2);
+
+				if (!data.equals(str2.substring(0, data.length()))) {
+					System.out.println(str2);
+				}
 			}
 		} catch (IOException io) {
-			System.out.println("Please check your key");
 		}
 		try {
 			sslSocket.close();

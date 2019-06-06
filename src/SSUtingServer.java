@@ -3,7 +3,7 @@ import java.io.*;
 import javax.net.ssl.*;
 
 public class SSUtingServer {
-	static boolean first = true;
+	static boolean first = true; // 주선자
 
 	public static void main(String[] args) {
 		final String runRoot = "D:\\대학 자료\\3-1\\네트워크 프로그래밍\\SSUting\\bin\\";
@@ -26,7 +26,7 @@ public class SSUtingServer {
 		String ksName = runRoot + ".keystore/SSUtingServerKey";
 
 		try {
-			WhisperServer whisperServer = new WhisperServer("localhost");
+			WhisperServer whisperServer = new WhisperServer("10.27.6.18");
 
 			System.setProperty("javax.net.ssl.keyStore", ksName);
 			System.setProperty("javax.net.ssl.keyStorePassword", "20150283");
@@ -42,10 +42,11 @@ public class SSUtingServer {
 				thread.start();
 				if (first) {
 					while (first) {
-						System.out.println("방 만들기 중...");
+						System.out.println("방 생성 중...");
 						Thread.sleep(1500);
 					}
-					System.out.println("방 만듬");
+					System.out.println("방 생성 완료!");
+					System.out.println(user.clientmap.keySet().toString() + "님이 사랑방을 만드셨습니다.\n");
 				}
 			}
 
