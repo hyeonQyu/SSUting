@@ -7,6 +7,7 @@ public class ServerThread extends Thread {
 	DataInputStream in;
 
 	String name; // 발신자
+
 	User user = new User();
 
 	WhisperServer whisperServer;
@@ -30,32 +31,11 @@ public class ServerThread extends Thread {
 				SSUtingServer.first = false;
 			}
 			user.addClient(name, this.sslSocket);
-
-			while (true) {
+			
+			while (true) {			
 				// 서버에서 클라이언트에게 메세지 전송
-				String msg = in.readUTF();
-
-				if (msg.substring(0, 2).equals("/w")) {
-					// 귓속말
-					String[] words = msg.split(" ");
-					// 수신자
-					String receiver = words[1];
-
-					// 메세지
-					String message = "";
-					for (int i = 2; i < words.length; i++) {
-						message += words[i];
-						message += " ";
-					}
-
-					// 발신자와 수신자에게만 귓속말 전송
-					whisperServer.sendWhisper(name, receiver, message);
-				} else if (msg.equals("quit")) {
-					user.removeClient(this.name);
-				} else {
-					// 귓속말이 아니라면 전체 전송
-					user.sendMsg(msg, name);
-				}
+                String msg = in.readUTF();
+                user.sendMsg(msg, name);
 			}
 		} catch (Exception e) {
 			user.removeClient(this.name);

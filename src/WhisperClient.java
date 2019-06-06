@@ -5,11 +5,11 @@ import java.rmi.RemoteException;
 
 public class WhisperClient {
 	
-	//public Whisper whisper;
+	private Whisper whisper;
 	
 	public WhisperClient(String server) {
 		try {
-			Whisper whisper = (Whisper) Naming.lookup("rmi://" + server + "/WhisperService");
+			whisper = (Whisper) Naming.lookup("rmi://" + server + "/WhisperServices");
 			System.out.println(whisper.getPartner());
 		}
 		catch(MalformedURLException mue) {
@@ -21,5 +21,9 @@ public class WhisperClient {
 		catch(NotBoundException nbe) {
 			System.out.println("NotBoundException: " + nbe);
 		}
+	}
+	
+	public void sendWhisper(String from, String to, String message) throws Exception {
+		whisper.sendWhisper(from, to, message);
 	}
 }
