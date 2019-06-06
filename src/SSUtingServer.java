@@ -1,5 +1,4 @@
 import java.io.*;
-import java.rmi.RemoteException;
 
 import javax.net.ssl.*;
 

@@ -14,13 +14,5 @@ public class WhisperServer {
 			System.out.print("Trouble: " + e);
 		}
 	}
-	
-	public void sendWhisper(String from, String to, String message) {
-		try {
-			whisper.sendWhisper(from, to, message);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 }
