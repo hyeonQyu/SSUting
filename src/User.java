@@ -36,10 +36,14 @@ public class User {
 	}
 
 	public synchronized void sendMsg(String msg, String name) throws Exception {
+		String printName = name;
 		Iterator iterator = clientmap.keySet().iterator();
 		while (iterator.hasNext()) {
 			String clientname = (String) iterator.next();
-			clientmap.get(clientname).writeUTF(name + " : " + msg);
+			if (printName.substring(0, 4).equals("(πÊ¿Â)")) {
+				printName = printName.substring(5);
+			}
+			clientmap.get(clientname).writeUTF(printName + " : " + msg);
 		}
 	}
 }
