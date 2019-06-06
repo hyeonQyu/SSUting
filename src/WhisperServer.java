@@ -1,5 +1,4 @@
 import java.rmi.Naming;
-import java.rmi.registry.LocateRegistry;
 
 public class WhisperServer {
 	
@@ -9,8 +8,7 @@ public class WhisperServer {
 		try {
 			// 1:1대화 객체 생성
 			whisper = new WhisperImpl();
-			//Naming.rebind("rmi://" + server + ":1099/WhisperService", whisper);
-			LocateRegistry.getRegistry("localhost", SSUtingServer.sPort+10).bind("rmi://" + server + ":1099/WhisperService", whisper);;
+			Naming.rebind("rmi://" + server + ":1099/WhisperService", whisper);
 			System.out.println("rmi서버 만들어짐");
 		} catch(Exception e) {
 			System.out.print("Trouble: " + e);

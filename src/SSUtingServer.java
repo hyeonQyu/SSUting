@@ -24,15 +24,8 @@ public class SSUtingServer {
 		sPort = Integer.parseInt(args[0]);
 
 		String ksName = runRoot + ".keystore/SSUtingServerKey";
-		try {
-			java.rmi.registry.LocateRegistry.createRegistry(sPort+10);
-		} catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
 		try {
-			
 			 WhisperServer whisperServer = new WhisperServer("localhost");
 					 
 			 System.setProperty("javax.net.ssl.keyStore",ksName);
