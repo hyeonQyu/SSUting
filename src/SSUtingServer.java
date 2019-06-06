@@ -13,25 +13,23 @@ public class SSUtingServer {
 		final String runRoot = "D:\\대학 자료\\3-1\\네트워크 프로그래밍\\SSUting\\bin\\"; // root change : your system
 																				// root
 		SSLServerSocketFactory ssf = null;
-		SSLServerSocket s = null;
-		SSLSocket c = null;
+		SSLServerSocket serverSocket = null;
+		SSLSocket sslSocket = null;
 
 		User user = new User();
-
-		Thread serverThread[] = new Thread[10];
-		int count = 0;
-
-		if (args.length != 1) {
-			System.out.println("Usage: Classname Port");
+		
+		if (args.length != 2) {
+			System.out.println("Usage: Classname Port and Key");
 			System.exit(1);
 		}
 		int sPort = Integer.parseInt(args[0]);
+		String key = args[1];
 
 		String ksName = runRoot + ".keystore/SSUtingServerKey";
 
-		char keyStorePass[] = "20150283".toCharArray();
+		char keyStorePass[] = key.toCharArray();
 
-		char keyPass[] = "20150283".toCharArray();
+		char keyPass[] = key.toCharArray();
 
 		try {
 			ks = KeyStore.getInstance("JKS");
@@ -41,32 +39,35 @@ public class SSUtingServer {
 			kmf.init(ks, keyPass);
 
 			sc = SSLContext.getInstance("TLS");
+
 			sc.init(kmf.getKeyManagers(), null, null);
+			ssf = sc.getServerSocketFactory();
+
+			serverSocket = (SSLServerSocket) ssf.createServerSocket(sPort);
+			
+			// printServerSocketInfo(s);
 
 			while (true) {
-				ssf = sc.getServerSocketFactory();
-				s = (SSLServerSocket) ssf.createServerSocket(sPort);
-				printServerSocketInfo(s);
+				
+				sslSocket = (SSLSocket) serverSocket.accept();
+				// printSocketInfo(c);
 
-				c = (SSLSocket) s.accept();
-				printSocketInfo(c);
-
-				serverThread[count] = new Thread(new ServerThread(user, c));
+				Thread serverThread = new Thread(new ServerThread(user, sslSocket));
+				serverThread.start();
 			}
-			// s.close();
-			// c.close();
+
 		} catch (SSLException se) {
 			System.out.println("SSL problem, exit~");
 			try {
-				s.close();
-				c.close();
+				serverSocket.close();
+				sslSocket.close();
 			} catch (IOException i) {
 			}
 		} catch (Exception e) {
 			System.out.println("What?? exit~");
 			try {
-				s.close();
-				c.close();
+				serverSocket.close();
+				sslSocket.close();
 			} catch (IOException i) {
 			}
 		}
