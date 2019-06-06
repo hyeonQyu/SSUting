@@ -9,11 +9,11 @@ public class ClientThread extends Thread {
 	String name; // ¹ß½ÅÀÚ
 	WhisperClient whisperClient;
 
-	public ClientThread(DataOutputStream out, String name) {
+	public ClientThread(String sServer, DataOutputStream out, String name) {
 		this.out = out;
 		this.name = name;
 
-		whisperClient = new WhisperClient("localhost");
+		whisperClient = new WhisperClient(sServer);
 	}
 
 	public void run() {

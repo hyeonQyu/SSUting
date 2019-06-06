@@ -22,11 +22,10 @@ public class SSUtingServer {
 		}
 
 		int sPort = Integer.parseInt(args[0]);
-
 		String ksName = runRoot + ".keystore/SSUtingServerKey";
 
 		try {
-			WhisperServer whisperServer = new WhisperServer("10.27.6.18");
+			WhisperServer whisperServer = new WhisperServer("localhost");
 
 			System.setProperty("javax.net.ssl.keyStore", ksName);
 			System.setProperty("javax.net.ssl.keyStorePassword", "20150283");
