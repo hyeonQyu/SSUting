@@ -6,7 +6,7 @@ public class SSUtingServer {
 	static boolean first = true; // 주선자
 
 	public static void main(String[] args) {
-		final String runRoot = "D:\\대학 자료\\3-1\\네트워크 프로그래밍\\SSUting\\bin\\";
+		final String runRoot = "C:\\Users\\hgKim\\Documents\\College\\3Grade\\1stSemester\\NetworkProgramming\\SSUting\\bin\\";
 
 		SSLServerSocketFactory sslServerFactory = null;
 		SSLServerSocket sslServerSocket = null;
