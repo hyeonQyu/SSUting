@@ -15,6 +15,7 @@ public class SSUtingServer {
 		User user = new User();
 
 		ServerThread thread = null;
+		int count = 1;
 
 		if (args.length != 1) {
 			System.out.println("Usage: Classname Port");
@@ -39,6 +40,7 @@ public class SSUtingServer {
 
 				thread = new ServerThread(user, sslSocket, whisperServer);
 				thread.start();
+
 				if (first) {
 					while (first) {
 						System.out.println("방 생성 중...");
@@ -46,6 +48,7 @@ public class SSUtingServer {
 					}
 					System.out.println("방 생성 완료!");
 					System.out.println(user.clientmap.keySet().toString() + "님이 사랑방을 만드셨습니다.\n");
+					System.out.println("채팅방 참여 인원 : 1");
 				}
 			}
 

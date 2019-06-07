@@ -36,9 +36,7 @@ public class ClientThread extends Thread {
 
 					// 발신자와 수신자에게만 귓속말 전송(RMI서버로 전송)
 					whisperClient.sendWhisper(name, receiver, message);
-				}
-
-				else {
+				} else {
 					// SSL서버로 전송
 					out.writeUTF(msg);
 				}

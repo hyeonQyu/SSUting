@@ -62,10 +62,13 @@ public class SSUtingClient {
 				}
 			}
 		} catch (IOException io) {
-		}
-		try {
-			sslSocket.close();
-		} catch (Exception e) {
+			System.err.println("Server 비정상 종료");
+			System.exit(1);
+			try {
+				sslSocket.close();
+			} catch (Exception e) {
+
+			}
 		}
 
 	}

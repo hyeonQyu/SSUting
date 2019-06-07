@@ -27,11 +27,10 @@ public class ServerThread extends Thread {
 
 			this.name = in.readUTF(); // 사용자 추가
 			user.addClient(name, this.sslSocket);
-			
+
 			if (SSUtingServer.first) {
 				SSUtingServer.first = false;
 			}
-			
 
 			while (true) {
 				// 서버에서 클라이언트에게 메세지 전송
