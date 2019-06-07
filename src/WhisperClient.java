@@ -22,8 +22,4 @@ public class WhisperClient {
 	public void sendWhisper(String from, String to, String message) throws Exception {
 		whisper.sendWhisper(from, to, message);
 	}
-
-	public void sendWhisper(String name, String message) throws Exception {
-
-	}
 }
