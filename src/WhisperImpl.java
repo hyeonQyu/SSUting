@@ -13,7 +13,7 @@ public class WhisperImpl extends UnicastRemoteObject implements Whisper {
 		Iterator iterator = User.clientmap.keySet().iterator();
 		while (iterator.hasNext()) {
 			String clientName = iterator.next().toString();
-
+			
 			// 발신자에게 전송할 메시지
 			if (clientName.equals(from)) {
 				String tempS;
